@@ -1,6 +1,9 @@
-# models.py
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group, Permission
+
+# Modelo de usuário personalizado
+default_user_model = settings.AUTH_USER_MODEL
 
 class Usuario(AbstractUser):
     idade = models.PositiveIntegerField(verbose_name="Idade", null=True, blank=True)
@@ -30,6 +33,7 @@ class Usuario(AbstractUser):
         verbose_name = "Usuário"
         verbose_name_plural = "Usuários"
 
+# Outros modelos do aplicativo
 class Perfil(models.Model):
     descricao_perfil = models.CharField(max_length=50, verbose_name="Descrição do perfil")
 
@@ -52,7 +56,7 @@ class Cargo(models.Model):
         verbose_name_plural = "Cargos"
 
 class Avaliacao(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name="Usuário")
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Usuário")
     nivel_inicial = models.CharField(max_length=50, verbose_name="Nível inicial")
     data = models.DateField(auto_now_add=True, verbose_name="Data da avaliação")
 
@@ -91,7 +95,7 @@ class Exercicio(models.Model):
         verbose_name_plural = "Exercícios"
 
 class Resultado(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name="Usuário")
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Usuário")
     exercicio = models.ForeignKey(Exercicio, on_delete=models.CASCADE, verbose_name="Exercício")
     acerto = models.BooleanField(verbose_name="Acertou?")
     tempo_resposta = models.IntegerField(verbose_name="Tempo de resposta (segundos)")
@@ -105,7 +109,7 @@ class Resultado(models.Model):
         verbose_name_plural = "Resultados"
 
 class Progresso(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name="Usuário")
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Usuário")
     nivel_atual = models.CharField(max_length=50, verbose_name="Nível atual")
     percentual_conclusao = models.FloatField(verbose_name="Percentual de conclusão")
     data_ultima_atividade = models.DateTimeField(auto_now=True, verbose_name="Última atividade")
@@ -118,20 +122,20 @@ class Progresso(models.Model):
         verbose_name_plural = "Progressos"
 
 class Mensagem(models.Model):
-    remetente = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="mensagens_enviadas", verbose_name="Remetente")
-    destinatario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="mensagens_recebidas", verbose_name="Destinatário")
+    remetente = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="mensagens_enviadas", verbose_name="Remetente")
+    destinatario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="mensagens_recebidas", verbose_name="Destinatário")
     mensagem = models.TextField(verbose_name="Mensagem")
     timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Data/Hora")
 
     def __str__(self):
-        return f"{self.remetente} -> {self.destinatario}: {self.mensagem[:20]}..."
+        return f"{self.remetente} -> {self.destinatario}: {self.mensagem[:20]}..."  
 
     class Meta:
         verbose_name = "Mensagem"
         verbose_name_plural = "Mensagens"
 
 class Notificacao(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, verbose_name="Usuário")
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Usuário")
     tipo = models.CharField(max_length=50, verbose_name="Tipo de notificação")
     mensagem = models.TextField(verbose_name="Mensagem da notificação")
     data_hora = models.DateTimeField(auto_now_add=True, verbose_name="Data/Hora")

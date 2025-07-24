@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Letrar - Início</title>
+  <title>Alfabetiza - Início</title>
 
   <!-- Bootstrap 5 CSS -->
   <link
@@ -19,15 +19,20 @@
 
   <style>
     :root {
-      --brand-dark: #0A2540;
-      --brand-dark-light: #1B3A57;
+      --brand-orange: #FF6B00;
+      --brand-orange-dark: #cc5600;
+      --glass-bg: rgba(255, 107, 0, 0.15);
+      --glass-border: rgba(255, 107, 0, 0.4);
+      --shadow-glass: rgba(255, 107, 0, 0.3);
     }
     body {
-      font-family: sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fffdf9, #fff3e6);
+      min-height: 100vh;
     }
     .navbar,
     .footer {
-      background-color: var(--brand-dark);
+      background-color: var(--brand-orange);
     }
     .navbar .nav-link,
     .navbar-brand,
@@ -37,25 +42,90 @@
       color: #ffffff !important;
     }
     .jumbotron {
-      background-color: #f4f7fa;
+      background-color: #fff3e6;
       padding: 4rem 1rem;
       text-align: center;
       margin-bottom: 3rem;
-      border-radius: 0.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 15px rgba(255, 107, 0, 0.25);
+    }
+    .btn-primary {
+      background-color: var(--brand-orange);
+      border-color: var(--brand-orange);
+      font-weight: 600;
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 8px var(--shadow-glass);
+    }
+    .btn-primary:hover {
+      background-color: var(--brand-orange-dark);
+      border-color: var(--brand-orange-dark);
+      box-shadow: 0 6px 15px var(--shadow-glass);
+    }
+
+    /* Novo estilo dos cards - glassmorphism + efeito animado */
+    .card {
+      background: var(--glass-bg);
+      border-radius: 1.5rem;
+      border: 1.5px solid var(--glass-border);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px var(--shadow-glass);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      cursor: pointer;
+      color: var(--brand-orange-dark);
+      text-align: center;
+      padding: 2rem 1.5rem;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .card:hover {
+      transform: translateY(-15px) scale(1.05);
+      box-shadow: 0 16px 40px var(--shadow-glass);
+      border-color: var(--brand-orange-dark);
+      color: var(--brand-orange-dark);
     }
     .card-icon {
-      font-size: 2rem;
-      color: var(--brand-dark);
-    }
-    .footer {
-      padding: 2rem 1rem;
-    }
-    .footer .col h6 {
-      color: #ffffff;
+      font-size: 4rem;
       margin-bottom: 1rem;
+      color: var(--brand-orange);
+      transition: color 0.3s ease;
     }
-    .footer a:hover {
-      text-decoration: underline;
+    .card:hover .card-icon {
+      color: var(--brand-orange-dark);
+    }
+    .card-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .card-text {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      flex-grow: 1;
+      color: #5a3d00;
+    }
+    .stretched-link::after {
+      z-index: 1;
+    }
+
+    /* Responsividade */
+    @media (max-width: 767px) {
+      .card {
+        min-height: 260px;
+        padding: 1.5rem 1rem;
+      }
+      .card-icon {
+        font-size: 3rem;
+      }
+      .card-title {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
@@ -64,7 +134,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'dashboard' %}">Letrar</a>
+      <a class="navbar-brand" href="{% url 'dashboard' %}">Alfabetiza</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -103,7 +173,7 @@
   <!-- Hero / Jumbotron -->
   <main class="container">
     <section class="jumbotron mt-4">
-      <h1 class="display-5">Bem-vindo ao <strong>Letrar</strong></h1>
+      <h1 class="display-5">Bem-vindo ao <strong>Alfabetiza</strong></h1>
       <p class="lead">Aqui você faz sua avaliação diagnóstica, pratica exercícios e acompanha seu progresso.</p>
       <a class="btn btn-primary btn-lg" href="#">Começar Agora</a>
     </section>
@@ -111,33 +181,27 @@
     <!-- Cards de Funcionalidades -->
     <div class="row g-4 mb-5">
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body text-center">
-            <i class="bi bi-clipboard-check card-icon mb-3"></i>
-            <h5 class="card-title">Avaliação Diagnóstica</h5>
-            <p class="card-text">Identifique seu nível e receba exercícios sob medida.</p>
-            <a href="#" class="stretched-link"></a>
-          </div>
+        <div class="card h-100">
+          <i class="bi bi-clipboard-check card-icon"></i>
+          <h5 class="card-title">Avaliação Diagnóstica</h5>
+          <p class="card-text">Identifique seu nível e receba exercícios sob medida.</p>
+          <a href="#" class="stretched-link"></a>
         </div>
       </div>
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body text-center">
-            <i class="bi bi-pencil-square card-icon mb-3"></i>
-            <h5 class="card-title">Exercícios</h5>
-            <p class="card-text">Pratique com correção automática e melhore seu aprendizado.</p>
-            <a href="{% url 'exercicios' %}" class="stretched-link"></a>
-          </div>
+        <div class="card h-100">
+          <i class="bi bi-pencil-square card-icon"></i>
+          <h5 class="card-title">Exercícios</h5>
+          <p class="card-text">Pratique com correção automática e melhore seu aprendizado.</p>
+          <a href="{% url 'exercicios' %}" class="stretched-link"></a>
         </div>
       </div>
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body text-center">
-            <i class="bi bi-bar-chart-line card-icon mb-3"></i>
-            <h5 class="card-title">Progresso</h5>
-            <p class="card-text">Confira suas estatísticas e histórico de desempenho.</p>
-            <a href="{% url 'progresso' %}" class="stretched-link"></a>
-          </div>
+        <div class="card h-100">
+          <i class="bi bi-bar-chart-line card-icon"></i>
+          <h5 class="card-title">Progresso</h5>
+          <p class="card-text">Confira suas estatísticas e histórico de desempenho.</p>
+          <a href="{% url 'progresso' %}" class="stretched-link"></a>
         </div>
       </div>
     </div>
@@ -148,8 +212,8 @@
     <div class="container">
       <div class="row">
         <div class="col-md-3 mb-3">
-          <h6>Letrar</h6>
-          <small>© 2025 Letrar</small>
+          <h6>Alfabetiza</h6>
+          <small>© 2025 Alfabetiza</small>
         </div>
         <div class="col-md-3 mb-3">
           <h6>Redes</h6>
@@ -159,7 +223,7 @@
         <div class="col-md-3 mb-3">
           <h6>Contate-nos</h6>
           <a href="tel:+550000000000"><i class="bi bi-telephone"></i> (00) 0000-0000</a><br />
-          <a href="mailto:contato@letrar.com"><i class="bi bi-envelope"></i> contato@letrar.com</a>
+          <a href="mailto:contato@alfabetiza.com"><i class="bi bi-envelope"></i> contato@alfabetiza.com</a>
         </div>
         <div class="col-md-3 mb-3">
           <h6>Sobre Nós</h6>
